@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - snmp
+  user: vagrant
+  # tasks:
+  #   - name: "Include snmp"
+  #     include_role:
+  #       name: "snmp"

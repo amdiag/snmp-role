@@ -1,0 +1,30 @@
+---
+# tasks file for snmp
+- name: Install software
+  package:
+    name:
+      - iptables-services
+      - net-snmp
+      - net-snmp-utils
+    state: present
+- name: Configure snmpd
+  blockinfile:
+    path: /etc/snmp/snmpd.conf
+    state: present
+    block: |
+      syslocation Server Room
+      syscontact SysAdmin (devops@example.com)
+      rocommunity snmp_secret_rocommunity
+    insertafter: EOF
+- name: Allow access via SNMP
+  iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: 161
+    ctstate: NEW
+    jump: ACCEPT
+- name: Start snmpd
+  systemd:
+    name: snmpd
+    enabled: true
+    state: started

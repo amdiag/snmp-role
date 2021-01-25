@@ -1,0 +1,27 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: instance
+    # image: docker.io/pycontribs/centos:8
+    # image: https://hub.docker.com/r/pycontribs/centos
+    # image: ultral/docker_centos_ansible_tests:latest
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    pre_build_image: true
+    privileged: True
+    # command: /sbin/init
+provisioner:
+  name: ansible
+scenario:
+  name: default
+verifier:
+  name: ansible
+# rm -f molecule/default/{create.yml, destroy.yml}
+# ls molecule/default /
+# INSTALL.rst converge.yml molecule.yml verify.yml
+# molecule test
