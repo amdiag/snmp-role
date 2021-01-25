@@ -2,37 +2,26 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
-lint: |
-  set -e
-  yamllint .
-  ansible-lint *yml
+  name: delegated
 platforms:
   - name: instance
-    image: ultral/docker_centos_ansible_tests:latest
-    pre_build_image: true
-    privileged: true
-    command: /sbin/init
-    tmpfs:
-      - /run
-      - /tmp
+    # image: docker.io/pycontribs/centos:8
+    # image: https://hub.docker.com/r/pycontribs/centos
+    # image: ultral/docker_centos_ansible_tests:latest
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    exposed_ports:
-      - 80/tcp
-    network_mode: host
+    pre_build_image: true
+    privileged: True
+    # command: /sbin/init
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-  playbooks:
-    converge: ../../provision_me.yml
-  config_options:
-    defaults:
-      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/ansible-vault.pass"
 scenario:
   name: default
 verifier:
   name: ansible
-  lint:
-    name: ansible-lint
+# rm -f molecule/default/{create.yml, destroy.yml}
+# ls molecule/default /
+# INSTALL.rst converge.yml molecule.yml verify.yml
+# molecule test

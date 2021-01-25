@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: all
-  vars:
-    game2048__git_dst: /tmp/test
-  roles:
-    - role: game2048

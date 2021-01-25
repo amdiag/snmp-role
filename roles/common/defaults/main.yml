@@ -1,3 +1,0 @@
----
-common__iptables_allowed_ports: ""
-common__enable_httpd: false
